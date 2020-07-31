@@ -1,67 +1,41 @@
-RM = rm
+NAME = ft_ping
 
-# LIBS
-D_LIBS = ./libs
-D_LIBFT = ${D_LIBS}/libft
-L_LIBFT = -L ${D_LIBFT} -lft
-I_LIBFT = -I $(D_LIBFT)/includes
+SRC = main.c headers.c
 
-
-# INCLUDES
-I_DIR = ./includes
-I_I = -I $(I_DIR) 
-HEADER	=	includes/ft_ping.h
-
-#COMPILER OPTIONS
 CC = gcc
-LFLAGS = $(L_LIBFT)
-IFLAGS = $(I_I) $(I_LIBFT)
-DFLAGS = -g
-EFLAGS = -Wall -Wextra -Werror
-CFLAGS = $(DFLAGS) $(IFLAGS) $(EFLAGS)
-CCFLAGS = $(DFLAGS) $(IFLAGS) $(LFLAGS) $(EFLAGS)
 
-# PING EXECUTABLE
-PING_EXEC = ft_ping
-PING_SRCS = $(wildcard ./src/*.c ./src/**/*.c /src/**/**/*.c)
-PING_OBJS = $(patsubst %.c,%.o,$(PING_SRCS))
+SRCDIR = src
 
-# ASM EXECUTABLE
+OBJDIR = obj
 
-all: $(PING_EXEC)
+OBJ = $(addprefix ${OBJDIR}/, $(SRC:.c=.o))
 
-$(PING_EXEC): libft $(PING_OBJS)
-	$(CC) $(CCFLAGS) -o $(PING_EXEC) $(PING_OBJS)
-	@echo ...........The $(PING_EXEC) program builded!............
+DEP = $(addprefix ${OBJDIR}/, $(SRC:.c=.d))
 
-%.o: %.c
-	$(CC) $(CFLAGS) $< -c -o $@
-	@echo [OBJS]:    [$@ Builded...]
+CFLAGS = -Wall -Wextra -Werror
 
-clean: libftclean
-	@$(RM) -f $(PING_OBJS)
-	@$(RM) -f $(ASM_OBJS)
-	@echo [RM]: All .o cleaned!
+LDFLAGS = -lm
+
+INCLUDES = -Iincludes/
+
+all: ${NAME}
+
+${NAME}: ${OBJ}
+	@${CC} ${CFLAGS} ${LDFLAGS} ${INCLUDES} -o $@ ${OBJ}
+
+${OBJDIR}/%.o: ${SRCDIR}/%.c
+	/bin/mkdir -p ${OBJDIR}
+	${CC} ${CFLAGS} ${INCLUDES} -c -o $@ $<
+
+clean:
+	@/bin/rm -Rf ${OBJDIR}
 
 fclean: clean
-	@$(RM) -f $(PING_EXEC)
-	@$(RM) -f $(ASM_EXEC)
-	@echo [RM]: All executables cleaned!
+	@/bin/rm -f ${NAME}
+	@/bin/rm -Rf ${NAME}.dSYM
 
-re: fclean libftfclean all
+test:
+	@${CC} -g ${INCLUDES} -fsanitize=address,undefined \
+	-I. -o ${NAME} $(addprefix src/, ${SRC})
 
-libft:
-	@echo [LIBFT]: Libft Make
-	@make -C $(D_LIBFT)
-
-libftclean:
-	@echo [LIBFT]: Libft clean
-	@make -C $(D_LIBFT) clean
-
-libftfclean:
-	@echo [LIBFT]: Libft fclean
-	@make -C $(D_LIBFT) fclean
-
-test: all
-	@echo ...........The $(PING_EXEC) output:............
-	@./ft_ping
+re: fclean all

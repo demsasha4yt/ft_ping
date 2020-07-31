@@ -4,3 +4,4 @@ ft_ping
 *.dSYM
 Contents
 *.a
+obj
