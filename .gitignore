@@ -1,3 +1,6 @@
 *.o
 ft_ping
 .vscode
+*.dSYM
+Contents
+*.a
