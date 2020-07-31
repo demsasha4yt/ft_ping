@@ -6,7 +6,7 @@
 /*   By: bharrold <bharrold@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/31 16:54:44 by bharrold          #+#    #+#             */
-/*   Updated: 2020/07/31 19:34:10 by bharrold         ###   ########.fr       */
+/*   Updated: 2020/07/31 19:57:08 by bharrold         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 # define FT_PING_H
 
 # include <stdio.h>
-
 # include "libft.h"
 
 /*
