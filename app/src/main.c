@@ -6,7 +6,7 @@
 /*   By: bharrold <bharrold@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/31 16:43:24 by bharrold          #+#    #+#             */
-/*   Updated: 2020/08/01 21:00:34 by bharrold         ###   ########.fr       */
+/*   Updated: 2020/08/01 21:12:15 by bharrold         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ void	sendloop(int sig)
 
 	if (gen_packet(&g_ping))
 		exit(EXIT_FAILURE);
-
+	print_header_by_byte(&g_ping);
 	printf("sendloop [2]: g_ping addr %p\n", &g_ping);
 	printf("sendloop [2]: g_ping.sock = %d\n", g_ping.sock);
 	send_echo_request(g_ping.sock, (const struct sockaddr*)&g_ping.ping_addr,
@@ -110,6 +110,7 @@ int		main(int argc, char **argv)
 		exit(EXIT_FAILURE);
 	if ((g_ping.dest_addr = parse_input(argc, argv)) == NULL)
 		exit(EXIT_FAILURE);
+
 	printf("main: g_ping addr %p\n", &g_ping);
 	printf("main: g_ping.sock = %d\n", g_ping.sock);
 	sendloop(0);
