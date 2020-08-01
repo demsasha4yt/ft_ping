@@ -83,7 +83,8 @@ typedef struct  s_ping
     uint8_t             packet[PACKET_SIZE];
     int             sock;
 }            t_ping;
-
+int         check_input(int argc, char **argv);
+char*	    parse_input(int argc, char **argv, t_ping *ping);
 int         gen_packet(t_ping *ping);
 uint16_t	in_cksum(uint8_t *data, size_t length);
 void        print_header_by_byte(t_ping *ping);
@@ -91,5 +92,5 @@ int         init_socket();
 void	    close_socket(int sig);
 void	    rcv_echo_response(int sockfd, struct sockaddr_in *addr, uint8_t *packet, int options);
 void	    send_echo_request(int sockfd, const struct sockaddr *dest, uint8_t *packet, int options);
-void        terminate();
+
 #endif

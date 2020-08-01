@@ -6,7 +6,7 @@
 /*   By: bharrold <bharrold@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/31 16:43:24 by bharrold          #+#    #+#             */
-/*   Updated: 2020/08/01 21:12:15 by bharrold         ###   ########.fr       */
+/*   Updated: 2020/08/01 21:16:56 by bharrold         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,39 +23,6 @@ static t_ping g_ping = {
 	},
 	.packet = ""
 };
-
-char*	parse_input(int argc, char **argv)
-{
-	struct addrinfo	hints = {.ai_family = AF_INET};
-	struct addrinfo *ainfo;
-
-	if (argc > 2 && argv[1][0] == '-' && argv[1][1] == 'v' && argv[1][2] == '\0')
-	{
-		g_ping.v_mode = 1;
-		argv++;
-	}
-	if (getaddrinfo(argv[1], NULL, &hints, &ainfo))
-	{
-		dprintf(2, "ft_ping: Can't resolve host %s", argv[1]);
-		return (NULL);
-	}
-	g_ping.ping_addr.sin_family = PF_INET;
-	g_ping.ping_addr.sin_port = 0;
-	g_ping.ping_addr.sin_addr.s_addr = ((struct sockaddr_in*)ainfo->ai_addr)->sin_addr.s_addr;
-	freeaddrinfo(ainfo);
-	return (argv[1]);
-}
-
-int check_input(int argc, char **argv)
-{
-	return (argc < 2 ||
-		(argv[1][0] == '-' && argv[1][1] == 'v' && argv[1][2] == '\0' && argc == 2));
-}
-
-void	terminate(int exitcode)
-{
-	exit(exitcode);
-}
 
 void	 close_socket(int sig)
 {
@@ -108,7 +75,7 @@ int		main(int argc, char **argv)
 	}
 	if ((g_ping.sock = init_socket()) == -1)
 		exit(EXIT_FAILURE);
-	if ((g_ping.dest_addr = parse_input(argc, argv)) == NULL)
+	if ((g_ping.dest_addr = parse_input(argc, argv, &g_ping)) == NULL)
 		exit(EXIT_FAILURE);
 
 	printf("main: g_ping addr %p\n", &g_ping);
