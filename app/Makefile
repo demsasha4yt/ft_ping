@@ -1,6 +1,6 @@
 NAME = ft_ping
 
-SRC = main.c headers.c
+SRC = main.c headers.c in_cksum.c socket.c
 
 CC = gcc
 
@@ -35,7 +35,6 @@ fclean: clean
 	@/bin/rm -Rf ${NAME}.dSYM
 
 test:
-	@${CC} -g ${INCLUDES} -fsanitize=address,undefined \
-	-I. -o ${NAME} $(addprefix src/, ${SRC})
+	@${CC} -g ${INCLUDES} -I. -o ${NAME} $(addprefix src/, ${SRC})
 
 re: fclean all

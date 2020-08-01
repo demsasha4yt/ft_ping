@@ -25,51 +25,71 @@
 # include <netinet/ip.h>
 # include <netdb.h>
 # include <sys/time.h>
+# include <signal.h>
 
 # define IP_HEADER_SZ  20
 # define ICMP_HEADER_SZ 8
 # define ICMP_PAYLOAD_SZ 56
 # define DEFAULT_TTL 61
+# define DEFAULT_PING_DELAY 4
 # define PACKET_SIZE (IP_HEADER_SZ + ICMP_HEADER_SZ + ICMP_PAYLOAD_SZ)
 
 
 typedef struct      s_icmp_hdr
 {
-    unsigned char   icmp_type;
-    unsigned char   icmp_code;
-    unsigned short  icmp_checksum;
-    unsigned short  icmp_id;
-    unsigned short  icmp_sequence;
+    uint8_t   icmp_type;
+    uint8_t   icmp_code;
+    uint16_t  icmp_checksum;
+    uint16_t  icmp_id;
+    uint16_t  icmp_sequence;
     unsigned long   icmp_timestamp;
 }                   t_icmp_hdr;
 
+/*
+** [IP HEADER FORMAT]
+** 4-bit IPv4 version 4-bit header length (in 32-bit words)
+** IP type of service
+** Total length
+** Unique identifier
+** Fragment offset field
+** Time to live
+** Protocol(TCP,UDP etc)
+** IP checksum
+** Source address
+** Dest address
+*/
 typedef struct      s_ip_hdr
 {
-    unsigned char   ip_verlen;        // 4-bit IPv4 version 4-bit header length (in 32-bit words)
-    unsigned char   ip_tos;           // IP type of service
-    unsigned short  ip_totallength;   // Total length
-    unsigned short  ip_id;            // Unique identifier
-    unsigned short  ip_offset;        // Fragment offset field
-    unsigned char   ip_ttl;           // Time to live
-    unsigned char   ip_protocol;      // Protocol(TCP,UDP etc)
-    unsigned short  ip_checksum;      // IP checksum
-    unsigned int    ip_srcaddr;       // Source address
-    unsigned int    ip_destaddr;      // Source address
+    uint8_t   ip_verlen;
+    uint8_t   ip_tos;
+    uint16_t  ip_totallength;
+    uint16_t  ip_id;
+    uint16_t  ip_offset;
+    uint8_t   ip_ttl;
+    uint8_t   ip_protocol;
+    uint16_t  ip_checksum;
+    uint32_t   ip_srcaddr;
+    uint32_t   ip_destaddr;
 }                   t_ip_hdr;
 
 typedef struct  s_ping
 {
     int v_mode;
     uint32_t            ttl;
+    uint32_t            ping_delay;
     uint32_t            sequence;
     char                *dest_addr;
     struct sockaddr_in  ping_addr;
-    t_icmp_hdr          icmp_hdr;
-    t_ip_hdr            ip_hdr;
-    int                 payload;
-    char                packet[PACKET_SIZE];
+    uint8_t             packet[PACKET_SIZE];
+    int             sock;
 }            t_ping;
 
 int         gen_packet(t_ping *ping);
+uint16_t	in_cksum(uint8_t *data, size_t length);
+void        print_header_by_byte(t_ping *ping);
+int         init_socket();
+void	    close_socket(int sig);
+void	    rcv_echo_response(int sockfd, struct sockaddr_in *addr, uint8_t *packet, int options);
+void	    send_echo_request(int sockfd, const struct sockaddr *dest, uint8_t *packet, int options);
 void        terminate();
 #endif
