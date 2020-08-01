@@ -1,4 +1,5 @@
 ## RUN
+Собственная реализация утилиты ping по проекту ft_ping в школе программирования 21.
 
 ```ruby
 docker-machine create --driver virtualbox default

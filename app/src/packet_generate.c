@@ -6,7 +6,7 @@
 /*   By: bharrold <bharrold@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/31 21:00:10 by bharrold          #+#    #+#             */
-/*   Updated: 2020/08/01 21:12:38 by bharrold         ###   ########.fr       */
+/*   Updated: 2020/08/01 21:19:38 by bharrold         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,7 @@ int						gen_packet(t_ping *ping)
 	memset(ping->packet, 0, PACKET_SIZE);
 	fill_ip_header(ping);
 	fill_icmp_header(ping);
-	memset((void*)(ping->packet + sizeof(t_icmp_hdr) + sizeof(t_ip_hdr)), 21, ICMP_PAYLOAD_SZ - 8);
+	memset((void*)(ping->packet + sizeof(t_icmp_hdr) + sizeof(t_ip_hdr)), 21,
+		ICMP_PAYLOAD_SZ - sizeof(unsigned long));
 	return (0);
 }
