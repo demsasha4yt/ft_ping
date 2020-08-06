@@ -23,3 +23,5 @@ make
 *Ping* - https://ru.wikipedia.org/wiki/Ping
 
 *Internet protocol checksum* - https://tools.ietf.org/html/rfc1071
+
+*tcpdump* - https://ru.wikipedia.org/wiki/Tcpdump
