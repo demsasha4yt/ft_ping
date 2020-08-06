@@ -5,36 +5,37 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: bharrold <bharrold@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/08/01 21:15:21 by bharrold          #+#    #+#             */
-/*   Updated: 2020/08/01 21:16:15 by bharrold         ###   ########.fr       */
+/*   Created: 2020/08/06 15:21:27 by bharrold          #+#    #+#             */
+/*   Updated: 2020/08/06 15:58:49 by bharrold         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ping.h"
 
-char*	parse_input(int argc, char **argv, t_ping *ping)
+
+int		parse_input(int argc, char **argv, t_ping *ping)
 {
-	struct addrinfo	hints = {.ai_family = AF_INET};
-	struct addrinfo *ainfo;
+	t_addrinfo hints = {.ai_family = AF_INET};
+	t_addrinfo *addrinfo;
 
 	if (argc > 2 && argv[1][0] == '-' && argv[1][1] == 'v' && argv[1][2] == '\0')
 	{
-		ping->v_mode = 1;
+		ping->s_vmode = 1;
 		argv++;
 	}
-	if (getaddrinfo(argv[1], NULL, &hints, &ainfo))
+	if (getaddrinfo(argv[1], NULL, &hints, &addrinfo))
 	{
-		dprintf(2, "ft_ping: Can't resolve host %s", argv[1]);
-		return (NULL);
+		perror("getaddrinfo");
+		dprintf(2, "ft_ping: Can't resolve host %s\n", argv[1]);
+		return (1);
 	}
-	ping->ping_addr.sin_family = PF_INET;
-	ping->ping_addr.sin_port = 0;
-	ping->ping_addr.sin_addr.s_addr = ((struct sockaddr_in*)ainfo->ai_addr)->sin_addr.s_addr;
-	freeaddrinfo(ainfo);
-	return (argv[1]);
+	ping->s_addr = ((t_sockaddr_in*)addrinfo->ai_addr)->sin_addr.s_addr;
+	ping->addr = argv[1];
+	freeaddrinfo(addrinfo);
+	return (0);
 }
 
-int check_input(int argc, char **argv)
+int		check_input(int argc, char **argv)
 {
 	return (argc < 2 ||
 		(argv[1][0] == '-' && argv[1][1] == 'v' && argv[1][2] == '\0' && argc == 2));

@@ -1,4 +1,6 @@
 app:
   build: ./
-  volumes: 
+  volumes:
     - ./app:/app
+  ports:
+    - "2222:22"

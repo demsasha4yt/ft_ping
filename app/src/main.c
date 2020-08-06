@@ -5,82 +5,76 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: bharrold <bharrold@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/07/31 16:43:24 by bharrold          #+#    #+#             */
-/*   Updated: 2020/08/01 21:16:56 by bharrold         ###   ########.fr       */
+/*   Created: 2020/08/06 15:00:55 by bharrold          #+#    #+#             */
+/*   Updated: 2020/08/06 21:41:41 by bharrold         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "ft_ping.h"
+#include "ft_ping.h"
 
-static t_ping g_ping = {
-	.ttl = DEFAULT_TTL,
-	.ping_delay = DEFAULT_PING_DELAY,
-	.sequence = 0,
-	.dest_addr = NULL,
-	.ping_addr = {
-		.sin_family = PF_INET,
-		.sin_port = 0
-	},
-	.packet = ""
-};
-
-void	 close_socket(int sig)
+void	sigint(int sig)
 {
-	printf("close_socket: g_ping addr %p\n", &g_ping);
-	printf("close_socket: g_ping.sock = %d\n", g_ping.sock);
-	close(g_ping.sock);
-	g_ping.sock = 0;
-	exit (0);
+	if (g_ping.sockfd > 0)
+		close_socket(g_ping.sockfd);
+	write(0, "\n", 1);
+	exit(EXIT_SUCCESS);
 	(void)sig;
 }
 
-void	sendloop(int sig)
+void	mainloop(int sig)
 {
-	printf("sendloop: g_ping addr %p\n", &g_ping);
-	printf("sendloop: g_ping.sock = %d\n", g_ping.sock);
-
-	if (gen_packet(&g_ping))
-		exit(EXIT_FAILURE);
-	print_header_by_byte(&g_ping);
-	printf("sendloop [2]: g_ping addr %p\n", &g_ping);
-	printf("sendloop [2]: g_ping.sock = %d\n", g_ping.sock);
-	send_echo_request(g_ping.sock, (const struct sockaddr*)&g_ping.ping_addr,
-		g_ping.packet, 0);
-	alarm(10);
+	printf("mainloop: g_ping addr %p\n", &g_ping);
+	printf("mainloop: g_ping.sockfd = %d\n", g_ping.sockfd);
+	if (genpacket(&g_ping))
+		sigint(0);
+	send_ping_pckt(&g_ping.packet);
+	printf("mainloop: SENT_PACKET:\n");
+	print_msg_by_byte(g_ping.packet.msg);
+	printf("mainloop: success\n");
+	alarm(5);
 	(void)sig;
 }
 
 void	recvloop(void)
 {
-	uint8_t packet[PACKET_SIZE];
+	t_sockaddr_in	addr;
+	uint8_t			packet[PACKET_SIZE];
 
-	while (1) {
-		printf("sendloop: g_ping addr %p\n", &g_ping);
-		printf("sendloop: g_ping.sock = %d\n", g_ping.sock);
-		rcv_echo_response(g_ping.sock, &g_ping.ping_addr, packet, 0);
+	memset(&addr, 0, sizeof(addr));
+	addr.sin_addr.s_addr = g_ping.s_addr;
+	addr.sin_family = PF_INET;
+	while (1)
+	{
+		recv_ping_response(g_ping.sockfd, packet, addr, 0);
+		analyze_rcvd_package(packet, &g_ping);
 	}
+}
+
+static int		makesignals(void)
+{
+	return (signal(SIGALRM, &mainloop) == SIG_ERR ||
+		signal(SIGINT, &sigint) == SIG_ERR);
 }
 
 int		main(int argc, char **argv)
 {
+	memset(&g_ping, 0, sizeof(g_ping));
 	if (check_input(argc, argv))
 	{
 		dprintf(2, "Usage: ping [-v] host\n");
-		exit(0);
+		exit(EXIT_SUCCESS);
 	}
-	if (signal(SIGALRM, &sendloop) == SIG_ERR
-	|| signal(SIGINT, &close_socket) == SIG_ERR) {
-		dprintf(2, "alarm failed");
+	if (makesignals()) {
+		dprintf(2, "ft_ping: Alarm failed\n");
 		exit(EXIT_FAILURE);
 	}
-	if ((g_ping.sock = init_socket()) == -1)
+	if ((g_ping.sockfd = create_socket()) < 0)
 		exit(EXIT_FAILURE);
-	if ((g_ping.dest_addr = parse_input(argc, argv, &g_ping)) == NULL)
+	if (parse_input(argc, argv, &g_ping))
 		exit(EXIT_FAILURE);
-
 	printf("main: g_ping addr %p\n", &g_ping);
-	printf("main: g_ping.sock = %d\n", g_ping.sock);
-	sendloop(0);
+	printf("main: g_ping.sockfd = %d\n", g_ping.sockfd);
+	mainloop(0);
 	recvloop();
 	return (0);
 }
