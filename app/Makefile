@@ -1,6 +1,6 @@
 NAME = ft_ping
 
-SRC = main.c input.c socket.c genpacket.c in_cksum.c analyze.c
+SRC = main.c input.c socket.c genpacket.c in_cksum.c analyze.c utils.c
 
 CC = gcc
 

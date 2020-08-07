@@ -6,7 +6,7 @@
 /*   By: bharrold <bharrold@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/06 15:01:15 by bharrold          #+#    #+#             */
-/*   Updated: 2020/08/06 21:38:21 by bharrold         ###   ########.fr       */
+/*   Updated: 2020/08/07 20:44:26 by bharrold         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,9 @@
 
 # include "ft_ping_types.h"
 
+# define DEFAULT_PING_DELAY 2
+# define DEFAULT_PING_TTL 100
+
 t_ping	g_ping;
 
 int			check_input(int argc, char **argv);
@@ -41,9 +44,11 @@ void		send_ping_pckt(t_ping_pckt *pckt);
 void		recv_ping_response(int sockfd, uint8_t *packet, t_sockaddr_in addr,
 				int options);
 int			genpacket(t_ping *ping);
-void		print_msg_by_byte(uint8_t *packet);
+void		print_msg_by_byte(uint8_t *packet, int size);
 uint16_t	in_cksum(uint8_t *data, size_t length);
 void		analyze_rcvd_package(uint8_t *packet, t_ping *ping);
+char		*ft_ntoa(t_in_addr in);
+suseconds_t	ft_gettime(void);
 
 #endif
 

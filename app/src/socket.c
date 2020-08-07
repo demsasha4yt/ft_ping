@@ -6,7 +6,7 @@
 /*   By: bharrold <bharrold@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/06 15:54:16 by bharrold          #+#    #+#             */
-/*   Updated: 2020/08/06 21:36:15 by bharrold         ###   ########.fr       */
+/*   Updated: 2020/08/07 20:04:04 by bharrold         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,10 +25,17 @@ int		create_socket()
 	}
 	if (setsockopt(sockfd, IPPROTO_UDP, IP_HDRINCL, (int[1]){1},
 		 sizeof(int32_t)) != -1) {
+			 perror("setsockopt");
 		dprintf(2, "Can't set socket options.");
 		close_socket(sockfd);
 		return (-1);
 	}
+	if(setsockopt(sockfd, IPPROTO_IP, IP_TTL, &g_ping.s_ttl,
+		 sizeof(g_ping.s_ttl))) {
+ 			perror("setsockopt");
+			dprintf(2, "Can't set socket options.");
+			close_socket(sockfd);
+		 }
 	return (sockfd);
 }
 
@@ -49,7 +56,6 @@ void	send_ping_pckt(t_ping_pckt *pckt)
 		close_socket(0);
 		exit(EXIT_FAILURE);
 	}
-	printf("send_ping_pckt: %ld\n", ret);
 }
 
 void	recv_ping_response(int sockfd, uint8_t *packet, t_sockaddr_in addr, int options)
@@ -69,7 +75,6 @@ void	recv_ping_response(int sockfd, uint8_t *packet, t_sockaddr_in addr, int opt
 	msg.msg_namelen = sizeof(addr);
 	msg.msg_iov = &io;
 	msg.msg_iovlen = 1;
-	msg.msg_flags = 0;
 	msg.msg_control = (void*)buffer;
 	msg.msg_controllen = 512;
 	ret = recvmsg(sockfd, &msg, 0);

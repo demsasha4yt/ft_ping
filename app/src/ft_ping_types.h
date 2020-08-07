@@ -6,7 +6,7 @@
 /*   By: bharrold <bharrold@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/06 15:31:27 by bharrold          #+#    #+#             */
-/*   Updated: 2020/08/06 21:14:33 by bharrold         ###   ########.fr       */
+/*   Updated: 2020/08/07 19:19:32 by bharrold         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 
 typedef struct addrinfo		t_addrinfo;
 typedef struct sockaddr_in	t_sockaddr_in;
+typedef struct in_addr		t_in_addr;
 typedef struct sockaddr		t_sockaddr;
 typedef struct timeval		t_timeval;
 typedef struct timezone		t_timezone;
@@ -35,10 +36,11 @@ typedef struct iovec		t_iovec;
 */
 
 # define PACKET_SIZE 84
+# define ICMP_PACKET_SIZE 64
 # define IP_HDR_SIZE 20
 # define ICMP_HDR_SIZE 8
 # define PAYLOAD_SIZE 56
-# define TIMESTAMP_SIZE 8
+# define TIMESTAMP_SIZE sizeof(suseconds_t)
 # define PAYLOAD_MEMSET (PAYLOAD_SIZE - TIMESTAMP_SIZE)
 
 /*
@@ -60,7 +62,7 @@ typedef struct				s_icmphdr
 	uint16_t				icmp__cksum;
 	uint16_t				icmp__id;
 	uint16_t				icmp__sequence;
-	uint64_t				icmp__timestamp;
+	suseconds_t				icmp__timestamp;
 }							t_icmphdr;
 
 /*
