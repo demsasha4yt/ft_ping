@@ -6,14 +6,13 @@
 /*   By: bharrold <bharrold@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/06 15:54:16 by bharrold          #+#    #+#             */
-/*   Updated: 2020/08/11 18:33:35 by bharrold         ###   ########.fr       */
+/*   Updated: 2020/08/11 19:01:01 by bharrold         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ping.h"
 
-
-int		create_socket()
+int		create_socket(void)
 {
 	int	sockfd;
 
@@ -23,16 +22,18 @@ int		create_socket()
 		return (sockfd);
 	}
 	if (setsockopt(sockfd, IPPROTO_UDP, IP_HDRINCL, (int[1]){1},
-		 sizeof(int32_t)) != -1) {
+		sizeof(int32_t)) != -1)
+	{
 		dprintf(2, "Can't set socket options.");
 		close_socket(sockfd);
 		return (-1);
 	}
 	if (setsockopt(sockfd, IPPROTO_IP, IP_TTL, &g_ping.s_ttl,
-		 sizeof(g_ping.s_ttl))) {
-			dprintf(2, "Can't set socket options.");
-			close_socket(sockfd);
-		 }
+		sizeof(g_ping.s_ttl)))
+	{
+		dprintf(2, "Can't set socket options.");
+		close_socket(sockfd);
+	}
 	return (sockfd);
 }
 
@@ -47,14 +48,16 @@ void	send_ping_pckt(t_ping_pckt *pckt)
 
 	ret = sendto(pckt->sockfd, pckt->msg, pckt->len, pckt->flags,
 		(struct sockaddr*)&pckt->to, sizeof(pckt->to));
-	if (ret < 0) {
+	if (ret < 0)
+	{
 		dprintf(2, "ft_printf: sendto failed\n");
 		close_socket(0);
 		exit(EXIT_FAILURE);
 	}
 }
 
-void	recv_ping_response(int sockfd, uint8_t *packet, t_sockaddr_in addr, int options)
+void	recv_ping_response(int sockfd, uint8_t *packet,
+				t_sockaddr_in addr, int options)
 {
 	ssize_t		ret;
 	t_msghdr	msg;

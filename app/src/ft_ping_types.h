@@ -6,7 +6,7 @@
 /*   By: bharrold <bharrold@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/06 15:31:27 by bharrold          #+#    #+#             */
-/*   Updated: 2020/08/11 18:17:32 by bharrold         ###   ########.fr       */
+/*   Updated: 2020/08/11 19:11:33 by bharrold         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,6 @@ typedef struct				s_iphdr {
 	uint32_t				ip_destaddr;
 }							t_iphdr;
 
-
 /*
 ** [t_ping_pckt format]:
 ** Opened socket fd
@@ -105,11 +104,10 @@ typedef struct				s_ping_pckt
 {
 	int						sockfd;
 	int						flags;
-	t_sockaddr_in		to;
+	t_sockaddr_in			to;
 	size_t					len;
 	uint8_t					msg[PACKET_SIZE];
 }							t_ping_pckt;
-
 
 typedef struct				s_ping
 {
@@ -120,10 +118,9 @@ typedef struct				s_ping
 	char					*addr;
 	t_ping_pckt				packet;
 	uint32_t				s_addr;
-	t_ping_pckt				t_ping_pckt;
 	int						sockfd;
 	int						transd_pckg;
-	int 					rcvd_pckgs;
+	int						rcvd_pckgs;
 	int						errors;
 	suseconds_t				start_time;
 }							t_ping;

@@ -6,13 +6,13 @@
 /*   By: bharrold <bharrold@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/06 15:00:55 by bharrold          #+#    #+#             */
-/*   Updated: 2020/08/11 18:32:17 by bharrold         ###   ########.fr       */
+/*   Updated: 2020/08/11 18:56:59 by bharrold         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ping.h"
 
-void	sigint(int sig)
+void		sigint(int sig)
 {
 	if (g_ping.sockfd > 0)
 		close_socket(g_ping.sockfd);
@@ -24,12 +24,13 @@ void	sigint(int sig)
 	if (g_ping.errors)
 		printf("+%d errors, ", g_ping.errors);
 	printf("%d%% packet loss, time %ldms\n\n",
-		(g_ping.transd_pckg - g_ping.rcvd_pckgs) / g_ping.transd_pckg * 100, ft_gettime() / 1000l - g_ping.start_time / 1000l);
+		(g_ping.transd_pckg - g_ping.rcvd_pckgs) / g_ping.transd_pckg * 100,
+		ft_gettime() / 1000l - g_ping.start_time / 1000l);
 	exit(EXIT_SUCCESS);
 	(void)sig;
 }
 
-void	mainloop(int sig)
+void		mainloop(int sig)
 {
 	if (genpacket(&g_ping))
 		sigint(0);
@@ -39,7 +40,7 @@ void	mainloop(int sig)
 	(void)sig;
 }
 
-void	recvloop(void)
+void		recvloop(void)
 {
 	t_sockaddr_in	addr;
 	uint8_t			packet[PACKET_SIZE];
@@ -48,7 +49,8 @@ void	recvloop(void)
 	addr.sin_addr.s_addr = g_ping.s_addr;
 	addr.sin_family = PF_INET;
 	printf("PING %s (%s) %d(%d) bytes of data.\n", g_ping.addr,
-		ft_ntoa((t_in_addr){.s_addr = g_ping.s_addr}), PAYLOAD_SIZE, PACKET_SIZE);
+		ft_ntoa((t_in_addr){.s_addr = g_ping.s_addr}),
+		PAYLOAD_SIZE, PACKET_SIZE);
 	while (1)
 	{
 		recv_ping_response(g_ping.sockfd, packet, addr, 0);
@@ -56,13 +58,13 @@ void	recvloop(void)
 	}
 }
 
-static int		makesignals(void)
+static int	makesignals(void)
 {
 	return (signal(SIGALRM, &mainloop) == SIG_ERR ||
 		signal(SIGINT, &sigint) == SIG_ERR);
 }
 
-int		main(int argc, char **argv)
+int			main(int argc, char **argv)
 {
 	memset(&g_ping, 0, sizeof(g_ping));
 	g_ping.s_ttl = DEFAULT_PING_TTL;
@@ -72,7 +74,8 @@ int		main(int argc, char **argv)
 		dprintf(2, "Usage: ping [-v] host\n");
 		exit(EXIT_SUCCESS);
 	}
-	if (makesignals()) {
+	if (makesignals())
+	{
 		dprintf(2, "ft_ping: Alarm failed\n");
 		exit(EXIT_FAILURE);
 	}

@@ -6,7 +6,7 @@
 /*   By: bharrold <bharrold@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/01 16:31:49 by bharrold          #+#    #+#             */
-/*   Updated: 2020/08/06 20:01:27 by bharrold         ###   ########.fr       */
+/*   Updated: 2020/08/11 19:08:27 by bharrold         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ uint32_t	compute_acc(uint16_t word, uint32_t acc)
 	acc += ntohs(word);
 	if (acc > 0xffff)
 		acc -= 0xffff;
-	return acc;
+	return (acc);
 }
 
 uint16_t	in_cksum(uint8_t *data, size_t length)

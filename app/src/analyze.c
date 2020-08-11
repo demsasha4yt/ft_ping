@@ -6,7 +6,7 @@
 /*   By: bharrold <bharrold@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/06 21:36:40 by bharrold          #+#    #+#             */
-/*   Updated: 2020/08/11 18:18:42 by bharrold         ###   ########.fr       */
+/*   Updated: 2020/08/11 19:06:45 by bharrold         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,11 +28,13 @@ static const char	*g_responses[] = {
 	[14]		= "Timestamp Reply",
 };
 
-static void	handle_no_echoreply(const t_iphdr *ip, const t_icmphdr *icmp, uint8_t *packet)
+static void			handle_no_echoreply(const t_iphdr *ip,
+	const t_icmphdr *icmp, uint8_t *packet)
 {
-	const char *error;
-	const t_icmphdr		*orig_icmp = (t_icmphdr*)(packet + sizeof(t_iphdr) + 8 + sizeof(t_iphdr));
+	const char		*error;
+	t_icmphdr		*orig_icmp;
 
+	orig_icmp = (t_icmphdr*)(packet + 2 * sizeof(t_iphdr) + 8);
 	if (htons(getpid()) != orig_icmp->icmp__id)
 		return ;
 	if (icmp->icmp__type < sizeof(g_responses))
@@ -46,7 +48,7 @@ static void	handle_no_echoreply(const t_iphdr *ip, const t_icmphdr *icmp, uint8_
 		error);
 }
 
-void	debug_rcvd_package(const t_iphdr *ip, const t_icmphdr *icmp)
+void				debug_rcvd_package(const t_iphdr *ip, const t_icmphdr *icmp)
 {
 	printf("DEBUG RCVD PACKAGE: \n");
 	printf("IP\n\
@@ -69,7 +71,7 @@ void	debug_rcvd_package(const t_iphdr *ip, const t_icmphdr *icmp)
 	icmp->icmp__timestamp);
 }
 
-void		analyze_rcvd_package(uint8_t *packet, t_ping *ping)
+void				analyze_rcvd_package(uint8_t *packet, t_ping *ping)
 {
 	const t_iphdr		*ip = (t_iphdr*)packet;
 	const t_icmphdr		*icmp = (t_icmphdr*)(packet + sizeof(t_iphdr));

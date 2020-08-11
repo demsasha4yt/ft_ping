@@ -6,19 +6,21 @@
 /*   By: bharrold <bharrold@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/06 15:21:27 by bharrold          #+#    #+#             */
-/*   Updated: 2020/08/11 18:33:11 by bharrold         ###   ########.fr       */
+/*   Updated: 2020/08/11 19:07:42 by bharrold         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ping.h"
 
-
 int		parse_input(int argc, char **argv, t_ping *ping)
 {
-	t_addrinfo hints = {.ai_family = AF_INET};
-	t_addrinfo *addrinfo;
+	t_addrinfo	hints;
+	t_addrinfo	*addrinfo;
 
-	if (argc > 2 && argv[1][0] == '-' && argv[1][1] == 'v' && argv[1][2] == '\0')
+	memset(&hints, 0, sizeof(hints));
+	hints.ai_family = AF_INET;
+	if (argc > 2 && argv[1][0] == '-'
+		&& argv[1][1] == 'v' && argv[1][2] == '\0')
 	{
 		ping->s_vmode = 1;
 		argv++;
@@ -37,5 +39,6 @@ int		parse_input(int argc, char **argv, t_ping *ping)
 int		check_input(int argc, char **argv)
 {
 	return (argc < 2 ||
-		(argv[1][0] == '-' && argv[1][1] == 'v' && argv[1][2] == '\0' && argc == 2));
+		(argv[1][0] == '-' && argv[1][1] == 'v'
+			&& argv[1][2] == '\0' && argc == 2));
 }
