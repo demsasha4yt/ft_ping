@@ -6,7 +6,7 @@
 /*   By: bharrold <bharrold@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/06 15:21:27 by bharrold          #+#    #+#             */
-/*   Updated: 2020/08/06 15:58:49 by bharrold         ###   ########.fr       */
+/*   Updated: 2020/08/11 18:33:11 by bharrold         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,6 @@ int		parse_input(int argc, char **argv, t_ping *ping)
 	}
 	if (getaddrinfo(argv[1], NULL, &hints, &addrinfo))
 	{
-		perror("getaddrinfo");
 		dprintf(2, "ft_ping: Can't resolve host %s\n", argv[1]);
 		return (1);
 	}

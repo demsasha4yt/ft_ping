@@ -6,7 +6,7 @@
 /*   By: bharrold <bharrold@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/06 15:01:15 by bharrold          #+#    #+#             */
-/*   Updated: 2020/08/07 20:44:26 by bharrold         ###   ########.fr       */
+/*   Updated: 2020/08/11 18:36:54 by bharrold         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,8 +31,8 @@
 
 # include "ft_ping_types.h"
 
-# define DEFAULT_PING_DELAY 2
-# define DEFAULT_PING_TTL 100
+# define DEFAULT_PING_DELAY 1
+# define DEFAULT_PING_TTL 64
 
 t_ping	g_ping;
 

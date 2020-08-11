@@ -6,7 +6,7 @@
 /*   By: bharrold <bharrold@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/06 15:54:16 by bharrold          #+#    #+#             */
-/*   Updated: 2020/08/07 20:04:04 by bharrold         ###   ########.fr       */
+/*   Updated: 2020/08/11 18:33:35 by bharrold         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,20 +19,17 @@ int		create_socket()
 
 	if ((sockfd = socket(AF_INET, SOCK_RAW, IPPROTO_ICMP)) < 0)
 	{
-		perror("socket");
 		dprintf(2, "Can't initialize socket\n");
 		return (sockfd);
 	}
 	if (setsockopt(sockfd, IPPROTO_UDP, IP_HDRINCL, (int[1]){1},
 		 sizeof(int32_t)) != -1) {
-			 perror("setsockopt");
 		dprintf(2, "Can't set socket options.");
 		close_socket(sockfd);
 		return (-1);
 	}
-	if(setsockopt(sockfd, IPPROTO_IP, IP_TTL, &g_ping.s_ttl,
+	if (setsockopt(sockfd, IPPROTO_IP, IP_TTL, &g_ping.s_ttl,
 		 sizeof(g_ping.s_ttl))) {
- 			perror("setsockopt");
 			dprintf(2, "Can't set socket options.");
 			close_socket(sockfd);
 		 }
@@ -51,7 +48,6 @@ void	send_ping_pckt(t_ping_pckt *pckt)
 	ret = sendto(pckt->sockfd, pckt->msg, pckt->len, pckt->flags,
 		(struct sockaddr*)&pckt->to, sizeof(pckt->to));
 	if (ret < 0) {
-		perror("sendto() error");
 		dprintf(2, "ft_printf: sendto failed\n");
 		close_socket(0);
 		exit(EXIT_FAILURE);

@@ -6,7 +6,7 @@
 /*   By: bharrold <bharrold@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/06 21:36:40 by bharrold          #+#    #+#             */
-/*   Updated: 2020/08/07 20:44:17 by bharrold         ###   ########.fr       */
+/*   Updated: 2020/08/11 18:18:42 by bharrold         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,24 +26,47 @@ static const char	*g_responses[] = {
 	[12]		= "Parameter Problem",
 	[13]		= "Timestamp Request",
 	[14]		= "Timestamp Reply",
-	[15]		= "Information Request",
-	[16]		= "Information Reply",
-	[17]		= "Address Mask Request",
-	[18]		= "Address Mask Reply"
 };
 
-static void	handle_no_echoreply(const t_iphdr *ip, const t_icmphdr *icmp)
+static void	handle_no_echoreply(const t_iphdr *ip, const t_icmphdr *icmp, uint8_t *packet)
 {
 	const char *error;
+	const t_icmphdr		*orig_icmp = (t_icmphdr*)(packet + sizeof(t_iphdr) + 8 + sizeof(t_iphdr));
 
+	if (htons(getpid()) != orig_icmp->icmp__id)
+		return ;
 	if (icmp->icmp__type < sizeof(g_responses))
 		error = g_responses[icmp->icmp__type];
 	else
 		error = NULL;
+	g_ping.errors += 1;
 	printf("From %s icmp_seq=%d %s\n",
 		ft_ntoa((t_in_addr){.s_addr = ip->ip_srcaddr}),
-		icmp->icmp__sequence,
+		htons(orig_icmp->icmp__sequence),
 		error);
+}
+
+void	debug_rcvd_package(const t_iphdr *ip, const t_icmphdr *icmp)
+{
+	printf("DEBUG RCVD PACKAGE: \n");
+	printf("IP\n\
+	ip_verlen=%d\n\
+	ip_tos=%d\n\
+	ip_totallength=%d\n\n",
+	ip->ip_verlen,
+	ip->ip_tos,
+	ip->ip_totallength);
+	printf("ICMP:\n\
+	icmp_type=%d\n\
+	icmp_code=%d\n\
+	icmp__id=%d\n\
+	icmp__sequence=%d\n\
+	icmp__timestamp=%ld\n",
+	icmp->icmp__type,
+	icmp->icmp__code,
+	icmp->icmp__id,
+	icmp->icmp__sequence,
+	icmp->icmp__timestamp);
 }
 
 void		analyze_rcvd_package(uint8_t *packet, t_ping *ping)
@@ -52,17 +75,14 @@ void		analyze_rcvd_package(uint8_t *packet, t_ping *ping)
 	const t_icmphdr		*icmp = (t_icmphdr*)(packet + sizeof(t_iphdr));
 	const suseconds_t	rtt = get_rtt(icmp->icmp__timestamp);
 
-	// printf("pid=%d\n
-	// icmp__id=%d\n
-	// icmp__type=%d\n
-	// icmp__seq=%d\n", getpid(), icmp->icmp__id, icmp->icmp__type, icmp->icmp__sequence);
-	if (htons(getpid()) != icmp->icmp__id)
-		return ;
 	if (icmp->icmp__type != ICMP_ECHOREPLY)
 	{
-		handle_no_echoreply(ip, icmp);
+		handle_no_echoreply(ip, icmp, packet);
 		return ;
 	}
+	if (htons(getpid()) != icmp->icmp__id)
+		return ;
+	g_ping.rcvd_pckgs += 1;
 	printf("%u bytes from %s: icmp_seq=%d ttl=%d time=%ld.%02ldms\n",
 		htons(ip->ip_totallength) - IP_HDR_SIZE,
 		ft_ntoa((t_in_addr){.s_addr = ip->ip_srcaddr}),

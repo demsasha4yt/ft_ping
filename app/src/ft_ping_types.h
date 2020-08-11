@@ -6,7 +6,7 @@
 /*   By: bharrold <bharrold@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/06 15:31:27 by bharrold          #+#    #+#             */
-/*   Updated: 2020/08/07 19:19:32 by bharrold         ###   ########.fr       */
+/*   Updated: 2020/08/11 18:17:32 by bharrold         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,6 +122,10 @@ typedef struct				s_ping
 	uint32_t				s_addr;
 	t_ping_pckt				t_ping_pckt;
 	int						sockfd;
+	int						transd_pckg;
+	int 					rcvd_pckgs;
+	int						errors;
+	suseconds_t				start_time;
 }							t_ping;
 
 #endif
