@@ -6,7 +6,7 @@
 /*   By: bharrold <bharrold@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/06 15:31:27 by bharrold          #+#    #+#             */
-/*   Updated: 2020/08/11 19:11:33 by bharrold         ###   ########.fr       */
+/*   Updated: 2020/08/11 19:24:38 by bharrold         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,6 +100,7 @@ typedef struct				s_iphdr {
 ** Data length
 ** Data
 */
+
 typedef struct				s_ping_pckt
 {
 	int						sockfd;
