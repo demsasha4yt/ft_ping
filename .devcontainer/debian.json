@@ -1,0 +1,13 @@
+{
+	"name": "Debian",
+	"build": {
+		"dockerfile": "Dockerfile",
+		"args": { "VARIANT": "buster" }
+	},
+
+	"settings": { 
+		"terminal.integrated.shell.linux": "/bin/bash"
+	},
+
+	"extensions": []
+}
