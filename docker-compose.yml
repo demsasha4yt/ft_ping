@@ -2,5 +2,4 @@ app:
   build: ./
   volumes:
     - ./app:/app
-  ports:
-    - "2222:22"
+  tty: true
