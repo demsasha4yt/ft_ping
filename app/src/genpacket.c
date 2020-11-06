@@ -6,7 +6,7 @@
 /*   By: bharrold <bharrold@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/06 16:39:23 by bharrold          #+#    #+#             */
-/*   Updated: 2020/08/11 19:22:28 by bharrold         ###   ########.fr       */
+/*   Updated: 2020/11/05 15:59:54 by bharrold         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,13 +28,13 @@ static inline void	fill_icmp_header(t_icmphdr *icmp, t_ping *ping)
 int					genpacket(t_ping *ping)
 {
 	ping->sequence += 1;
-	memset(&ping->packet, 0, sizeof(ping->packet));
-	memset((void*)(ping->packet.msg + sizeof(t_icmphdr)), 21, PAYLOAD_MEMSET);
+	ft_memset(&ping->packet, 0, sizeof(ping->packet));
+	ft_memset((void*)(ping->packet.msg + sizeof(t_icmphdr)), 21, PAYLOAD_MEMSET);
 	fill_icmp_header((t_icmphdr*)(ping->packet.msg), ping);
 	ping->packet.flags = 0;
 	ping->packet.sockfd = ping->sockfd;
 	ping->packet.len = ICMP_PACKET_SIZE;
-	memset((void*)&ping->packet.to, 0, sizeof(ping->packet.to));
+	ft_memset((void*)&ping->packet.to, 0, sizeof(ping->packet.to));
 	ping->packet.to.sin_family = AF_INET;
 	ping->packet.to.sin_addr.s_addr = ping->s_addr;
 	ping->packet.to.sin_port = htons(0);

@@ -6,7 +6,7 @@
 /*   By: bharrold <bharrold@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/06 15:01:15 by bharrold          #+#    #+#             */
-/*   Updated: 2020/08/11 19:07:59 by bharrold         ###   ########.fr       */
+/*   Updated: 2020/11/06 18:09:14 by bharrold         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,13 +31,15 @@
 
 # include "ft_ping_types.h"
 
+# define USAGE_ERROR 16
+
 # define DEFAULT_PING_DELAY 1
 # define DEFAULT_PING_TTL 64
 
 t_ping		g_ping;
 
 int			check_input(int argc, char **argv);
-int			parse_input(int argc, char **argv, t_ping *ping);
+int			parse_input(char **argv, t_ping *ping);
 int			create_socket();
 void		close_socket(int sockfd);
 void		send_ping_pckt(t_ping_pckt *pckt);
@@ -49,6 +51,10 @@ uint16_t	in_cksum(uint8_t *data, size_t length);
 void		analyze_rcvd_package(uint8_t *packet, t_ping *ping);
 char		*ft_ntoa(t_in_addr in);
 suseconds_t	ft_gettime(void);
+int			ft_atoi(const char *s);
+int			ft_isnumeric(char *s);
+void		*ft_memset(void *b, int c, size_t len);
+void		print_error(int code);
 
 #endif
 

@@ -6,11 +6,61 @@
 /*   By: bharrold <bharrold@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/07 18:33:14 by bharrold          #+#    #+#             */
-/*   Updated: 2020/08/11 19:19:50 by bharrold         ###   ########.fr       */
+/*   Updated: 2020/11/05 16:15:09 by bharrold         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ping.h"
+
+int		ft_atoi(const char *str)
+{
+	int		i;
+	int		num;
+	int		sign;
+
+	i = 0;
+	num = 0;
+	sign = 1;
+	while (*(str + i) == '\n' ||
+		*(str + i) == '\t' ||
+		*(str + i) == '\r' ||
+		*(str + i) == '\v' ||
+		*(str + i) == '\f' ||
+		*(str + i) == ' ')
+		i++;
+	if (*(str + i) == '-')
+		sign = -1;
+	if (*(str + i) == '-' || *(str + i) == '+')
+		i++;
+	while (*(str + i) && *(str + i) >= '0' && *(str + i) <= '9')
+		num = num * 10 + (*(str + i++) - '0');
+	return (num * sign);
+}
+
+int			ft_isnumeric(char *str)
+{
+	if (str == NULL)
+		return (0);
+	while (str && *str)
+	{
+		if (*str < '0' || *str > '9')
+			return (0);
+		str++;
+	}
+	return (1);
+}
+
+void	*ft_memset(void *b, int c, size_t len)
+{
+	char	*ptr;
+	size_t	i;
+
+	ptr = b;
+	i = 0;
+	while (i < len)
+		*(ptr + i++) = c;
+	return (b);
+}
 
 char		*ft_ntoa(t_in_addr in)
 {

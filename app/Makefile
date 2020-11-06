@@ -1,6 +1,6 @@
 NAME = ft_ping
 
-SRC = main.c input.c socket.c genpacket.c in_cksum.c analyze.c utils.c
+SRC = main.c input.c socket.c genpacket.c in_cksum.c analyze.c utils.c errors.c
 
 CC = gcc
 
@@ -12,7 +12,7 @@ OBJ = $(addprefix ${OBJDIR}/, $(SRC:.c=.o))
 
 DEP = $(addprefix ${OBJDIR}/, $(SRC:.c=.d))
 
-CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra -Werror -g
 
 LDFLAGS = -lm
 

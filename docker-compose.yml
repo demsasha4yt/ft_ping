@@ -3,3 +3,4 @@ app:
   volumes:
     - ./app:/app
   tty: true
+  container_name: bharrold_ft_ping

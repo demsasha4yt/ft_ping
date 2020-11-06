@@ -6,7 +6,7 @@
 /*   By: bharrold <bharrold@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/06 15:54:16 by bharrold          #+#    #+#             */
-/*   Updated: 2020/08/11 19:01:01 by bharrold         ###   ########.fr       */
+/*   Updated: 2020/11/06 18:08:28 by bharrold         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,9 +65,9 @@ void	recv_ping_response(int sockfd, uint8_t *packet,
 	uint8_t		buffer[512];
 
 	ret = 0;
-	memset(&msg, 0, sizeof(msg));
-	memset(&io, 0, sizeof(io));
-	memset(buffer, 0, 512);
+	ft_memset(&msg, 0, sizeof(msg));
+	ft_memset(&io, 0, sizeof(io));
+	ft_memset(buffer, 0, 512);
 	io.iov_base = (void*)packet;
 	io.iov_len = PACKET_SIZE;
 	msg.msg_name = &addr;

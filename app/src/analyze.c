@@ -6,7 +6,7 @@
 /*   By: bharrold <bharrold@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/06 21:36:40 by bharrold          #+#    #+#             */
-/*   Updated: 2020/08/11 19:06:45 by bharrold         ###   ########.fr       */
+/*   Updated: 2020/11/06 18:32:46 by bharrold         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,8 @@ static void			handle_no_echoreply(const t_iphdr *ip,
 	else
 		error = NULL;
 	g_ping.errors += 1;
+	if (g_ping.s_audibble)
+		printf("\a");
 	printf("From %s icmp_seq=%d %s\n",
 		ft_ntoa((t_in_addr){.s_addr = ip->ip_srcaddr}),
 		htons(orig_icmp->icmp__sequence),
@@ -71,6 +73,15 @@ void				debug_rcvd_package(const t_iphdr *ip, const t_icmphdr *icmp)
 	icmp->icmp__timestamp);
 }
 
+static void			analyze_rtt(t_ping *ping, const suseconds_t rtt)
+{
+	if (ping->min_tm == 0 || ping->min_tm > rtt)
+		ping->min_tm = rtt;
+	if (ping->max_tm == 0 ||ping->max_tm < rtt)
+		ping->max_tm = rtt;
+	ping->avg_tm = ping->min_tm / 2 + ping->max_tm / 2;
+}
+
 void				analyze_rcvd_package(uint8_t *packet, t_ping *ping)
 {
 	const t_iphdr		*ip = (t_iphdr*)packet;
@@ -84,11 +95,12 @@ void				analyze_rcvd_package(uint8_t *packet, t_ping *ping)
 	}
 	if (htons(getpid()) != icmp->icmp__id)
 		return ;
-	g_ping.rcvd_pckgs += 1;
-	printf("%u bytes from %s: icmp_seq=%d ttl=%d time=%ld.%02ldms\n",
-		htons(ip->ip_totallength) - IP_HDR_SIZE,
-		ft_ntoa((t_in_addr){.s_addr = ip->ip_srcaddr}),
-		htons(icmp->icmp__sequence), ip->ip_ttl,
-		rtt / 1000l, rtt % 1000l);
-	(void)*ping;
+	analyze_rtt(ping, rtt);
+	ping->rcvd_pckgs += 1;
+	if (!ping->s_quite && !ping->s_flood)
+		printf("%u bytes from %s: icmp_seq=%d ttl=%d time=%ld.%02ldms\n",
+			htons(ip->ip_totallength) - IP_HDR_SIZE,
+			ft_ntoa((t_in_addr){.s_addr = ip->ip_srcaddr}),
+			htons(icmp->icmp__sequence), ip->ip_ttl,
+			rtt / 1000l, rtt % 1000l);
 }

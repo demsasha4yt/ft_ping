@@ -6,7 +6,7 @@
 /*   By: bharrold <bharrold@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/06 15:31:27 by bharrold          #+#    #+#             */
-/*   Updated: 2020/08/11 19:24:38 by bharrold         ###   ########.fr       */
+/*   Updated: 2020/11/06 18:05:57 by bharrold         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,6 +115,9 @@ typedef struct				s_ping
 	uint8_t					s_vmode;
 	uint32_t				s_ttl;
 	uint32_t				s_delay;
+	uint32_t				s_quite;
+	uint32_t				s_audibble;
+	uint32_t				s_flood;
 	uint32_t				sequence;
 	char					*addr;
 	t_ping_pckt				packet;
@@ -124,6 +127,9 @@ typedef struct				s_ping
 	int						rcvd_pckgs;
 	int						errors;
 	suseconds_t				start_time;
+	suseconds_t				min_tm;
+	suseconds_t				max_tm;
+	suseconds_t				avg_tm;
 }							t_ping;
 
 #endif
