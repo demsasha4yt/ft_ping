@@ -14,7 +14,7 @@ docker-compose run app bash
 ## Inside VM
 ```ruby
 make
-./ft_ping [-v] host
+./ft_ping [-afhvq] [-i interval] [-t ttl] host
 ```
 
 ## Refs
