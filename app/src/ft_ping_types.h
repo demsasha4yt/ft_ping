@@ -6,7 +6,7 @@
 /*   By: bharrold <bharrold@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/06 15:31:27 by bharrold          #+#    #+#             */
-/*   Updated: 2020/11/06 18:05:57 by bharrold         ###   ########.fr       */
+/*   Updated: 2020/11/06 18:53:52 by bharrold         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,6 +109,29 @@ typedef struct				s_ping_pckt
 	size_t					len;
 	uint8_t					msg[PACKET_SIZE];
 }							t_ping_pckt;
+
+
+/*
+** [t_ping format]:
+** FLAG: verbode mode
+** OPTION: ttl (from 1 to 255)
+** OPTION: delay (from 1 to 255)
+** FLAG: quite mode
+** FLAG: audibble mode
+** FLAG: flood mode
+** current sequence
+** string addres
+** packet struct
+** destination IP
+** socket fd
+** count of transmitted packages
+** count of recieved packages
+** count of errors
+** transmit start time
+** rtt min time
+** rtt max time
+** rtt avg time
+*/
 
 typedef struct				s_ping
 {
