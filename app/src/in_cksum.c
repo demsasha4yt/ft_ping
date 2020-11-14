@@ -6,7 +6,7 @@
 /*   By: bharrold <bharrold@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/01 16:31:49 by bharrold          #+#    #+#             */
-/*   Updated: 2020/08/11 19:08:27 by bharrold         ###   ########.fr       */
+/*   Updated: 2020/11/14 18:11:20 by bharrold         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,13 +31,13 @@ uint16_t	in_cksum(uint8_t *data, size_t length)
 	word = 0;
 	while (i < length)
 	{
-		memcpy(&word, data + i, 2);
+		ft_memcpy(&word, data + i, 2);
 		acc = compute_acc(word, acc);
 		i += 2;
 	}
 	if (length & 1)
 	{
-		memcpy(&word, data + length, 1);
+		ft_memcpy(&word, data + length, 1);
 		acc = compute_acc(word, acc);
 	}
 	return (htons(~acc));

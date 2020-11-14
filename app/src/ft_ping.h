@@ -6,7 +6,7 @@
 /*   By: bharrold <bharrold@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/06 15:01:15 by bharrold          #+#    #+#             */
-/*   Updated: 2020/11/06 19:00:24 by bharrold         ###   ########.fr       */
+/*   Updated: 2020/11/14 18:11:08 by bharrold         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,7 @@ int			ft_atoi(const char *s);
 int			ft_isnumeric(char *s);
 void		*ft_memset(void *b, int c, size_t len);
 void		print_error(int code);
+void		*ft_memcpy(void *dst, const void *src, size_t n);
 
 #endif
 
