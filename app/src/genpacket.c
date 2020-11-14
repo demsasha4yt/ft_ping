@@ -6,7 +6,7 @@
 /*   By: bharrold <bharrold@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/06 16:39:23 by bharrold          #+#    #+#             */
-/*   Updated: 2020/11/05 15:59:54 by bharrold         ###   ########.fr       */
+/*   Updated: 2020/11/14 17:04:17 by bharrold         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,8 @@ int					genpacket(t_ping *ping)
 {
 	ping->sequence += 1;
 	ft_memset(&ping->packet, 0, sizeof(ping->packet));
-	ft_memset((void*)(ping->packet.msg + sizeof(t_icmphdr)), 21, PAYLOAD_MEMSET);
+	ft_memset((void*)(ping->packet.msg + sizeof(t_icmphdr)), 21,
+		PAYLOAD_MEMSET);
 	fill_icmp_header((t_icmphdr*)(ping->packet.msg), ping);
 	ping->packet.flags = 0;
 	ping->packet.sockfd = ping->sockfd;

@@ -6,7 +6,7 @@
 /*   By: bharrold <bharrold@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/06 15:31:27 by bharrold          #+#    #+#             */
-/*   Updated: 2020/11/06 18:53:52 by bharrold         ###   ########.fr       */
+/*   Updated: 2020/11/14 17:04:31 by bharrold         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,7 +109,6 @@ typedef struct				s_ping_pckt
 	size_t					len;
 	uint8_t					msg[PACKET_SIZE];
 }							t_ping_pckt;
-
 
 /*
 ** [t_ping format]:

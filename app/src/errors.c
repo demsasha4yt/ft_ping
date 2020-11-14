@@ -5,24 +5,25 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: bharrold <bharrold@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/11/05 23:57:41 by bharrold          #+#    #+#             */
-/*   Updated: 2020/11/06 18:07:06 by bharrold         ###   ########.fr       */
+/*   Created: 2020/11/14 17:11:29 by bharrold          #+#    #+#             */
+/*   Updated: 2020/11/14 17:11:31 by bharrold         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ping.h"
 
-void print_usage(void) 
+const char	*g_usage_str ="Usage: ping [-afhvq] [-i interval] [-t ttl] host\n\n\
+Usage: ping -h for help\n"
+
+void		print_usage(void)
 {
-	dprintf(2, "Usage: ping [-afhvq] [-i interval] [-t ttl] host\n\n\
-Usage: ping -h for help\n");
+	dprintf(2, g_usage_str);
 }
 
-void	print_error(int code)
+void		print_error(int code)
 {
-	if (code == USAGE_ERROR) 
+	if (code == USAGE_ERROR)
 		print_usage();
-	else {
+	else
 		dprintf(2, "The program was exited with error code %d", code);
-	}
 }

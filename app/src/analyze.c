@@ -6,7 +6,7 @@
 /*   By: bharrold <bharrold@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/06 21:36:40 by bharrold          #+#    #+#             */
-/*   Updated: 2020/11/06 18:32:46 by bharrold         ###   ########.fr       */
+/*   Updated: 2020/11/14 17:00:49 by bharrold         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ static void			analyze_rtt(t_ping *ping, const suseconds_t rtt)
 {
 	if (ping->min_tm == 0 || ping->min_tm > rtt)
 		ping->min_tm = rtt;
-	if (ping->max_tm == 0 ||ping->max_tm < rtt)
+	if (ping->max_tm == 0 || ping->max_tm < rtt)
 		ping->max_tm = rtt;
 	ping->avg_tm = ping->min_tm / 2 + ping->max_tm / 2;
 }

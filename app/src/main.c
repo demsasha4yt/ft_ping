@@ -6,7 +6,7 @@
 /*   By: bharrold <bharrold@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/06 15:00:55 by bharrold          #+#    #+#             */
-/*   Updated: 2020/11/06 18:47:43 by bharrold         ###   ########.fr       */
+/*   Updated: 2020/11/14 17:02:37 by bharrold         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,11 +27,10 @@ void		sigint(int sig)
 		(g_ping.transd_pckg - g_ping.rcvd_pckgs) * 100 / g_ping.transd_pckg,
 		ft_gettime() / 1000l - g_ping.start_time / 1000l);
 	if (!g_ping.errors && g_ping.min_tm > 0l && g_ping.max_tm > 0l)
-		printf("rtt min/avg/max = %ld.%02ld/%ld.%02ld/%ld.%02ld ms", 
+		printf("rtt min/avg/max = %ld.%02ld/%ld.%02ld/%ld.%02ld ms",
 			g_ping.min_tm / 1000l, g_ping.min_tm % 1000l,
 			g_ping.avg_tm / 1000l, g_ping.avg_tm % 1000l,
-			g_ping.max_tm / 1000l, g_ping.max_tm % 1000l
-			);
+			g_ping.max_tm / 1000l, g_ping.max_tm % 1000l);
 	printf("\n");
 	exit(EXIT_SUCCESS);
 	(void)sig;

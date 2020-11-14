@@ -6,13 +6,13 @@
 /*   By: bharrold <bharrold@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/07 18:33:14 by bharrold          #+#    #+#             */
-/*   Updated: 2020/11/05 16:15:09 by bharrold         ###   ########.fr       */
+/*   Updated: 2020/11/14 17:01:11 by bharrold         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ping.h"
 
-int		ft_atoi(const char *str)
+int			ft_atoi(const char *str)
 {
 	int		i;
 	int		num;
@@ -50,7 +50,7 @@ int			ft_isnumeric(char *str)
 	return (1);
 }
 
-void	*ft_memset(void *b, int c, size_t len)
+void		*ft_memset(void *b, int c, size_t len)
 {
 	char	*ptr;
 	size_t	i;
